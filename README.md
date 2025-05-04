@@ -1,7 +1,7 @@
 # Simpler 👥  
 *A minimalist platform for creating and joining discussion groups*
 
-![Simpler Screenshot](screenshots/home.png)
+![Simpler Screenshot](screenshots/home.PNG)
 
 ## Features
 
