@@ -1,0 +1,17 @@
+{% extends "groups/group_base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h4 class="card-title text-danger">Confirm Delete</h4>
+            <p>Are you sure you want to delete the group "<strong>{{ object.name }}</strong>"?</p>
+            <form method="post">
+                {% csrf_token %}
+                <a href="{% url 'groups:single' object.slug %}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

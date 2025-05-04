@@ -1,0 +1,73 @@
+{% extends "posts/post_base.html" %}
+{% load static %}
+
+{% block title %}{{ post_user.username }}'s Posts | Simpler{% endblock %}
+
+{% block pre_post %}
+<div class="profile-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-2 col-4">
+                <div class="profile-avatar">
+                    <div class="avatar-circle">
+                        {{ post_user.username|slice:":1"|upper }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-8">
+                <h1 class="profile-username">
+                    <i class="fas fa-user-circle me-2"></i>
+                    @{{ post_user.username }}
+                </h1>
+                <p class="profile-stats">
+                    <i class="fas fa-file-alt me-1"></i>
+                    {{ post_list.count }} post{{ post_list.count|pluralize }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block post_content %}
+<div class="container">
+    {% if post_list %}
+    <div class="row">
+        {% for post in post_list %}
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="post-card card h-100">
+                <div class="card-body">
+                    {% include "posts/_post.html" %}
+                </div>
+                <div class="card-footer bg-white border-top-0 pt-0">
+                    <small class="text-muted">
+                        <i class="far fa-clock me-1"></i>
+                        {{ post.created_at|timesince }} ago
+                    </small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <i class="fas fa-file-alt"></i>
+        </div>
+        <h3>No Posts Yet</h3>
+        <p>
+            {% if user == post_user %}
+            Your creative space is empty. Share your first thought with the world!
+            {% else %}
+            @{{ post_user.username }} hasn't shared anything yet.
+            {% endif %}
+        </p>
+        {% if user == post_user %}
+        <a href="{% url 'posts:create' %}" class="btn btn-primary px-4 py-2">
+            <i class="fas fa-plus me-2"></i>Create Post
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

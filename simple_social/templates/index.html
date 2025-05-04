@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 animate__animated animate__fadeInLeft">
+                <h1 class="display-4 fw-bold mb-4">Welcome to Simpler</h1>
+                <p class="lead mb-4">Connect with friends, share your thoughts, and join communities that matter to you.</p>
+                <div class="d-flex gap-3">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'groups:all' %}" class="btn btn-light btn-lg px-4 animate__animated animate__pulse animate__infinite animate__slower">
+                            <i class="bi bi-people-fill me-2"></i>Explore Groups
+                        </a>
+                        <a href="{% url 'posts:create' %}" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-pencil-square me-2"></i>Create Post
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:signup' %}" class="btn btn-light btn-lg px-4 animate__animated animate__pulse animate__infinite animate__slower">
+                            <i class="bi bi-person-plus me-2"></i>Join Now
+                        </a>
+                        <a href="{% url 'accounts:login' %}" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 animate__animated animate__fadeInRight">
+                <!-- <img src="{% static 'simple_social/images/hero-illustration.svg ' %}" alt="Social connection illustration" class="img-fluid d-none d-lg-block"> -->
+                <img src="{% static 'simple_social/images/istockphoto-2155844916-1024x1024.jpg' %}" alt="Social connection illustration" class="img-fluid d-none d-lg-block">
+                <!-- myDjangoEnv/simple_social/static/simple_social/images/istockphoto-2155844916-1024x1024.jpg -->
+            
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Why Choose Simpler?</h2>
+            <p class="section-subtitle text-muted">Experience social networking made simple</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4 animate__animated animate__fadeInUp" data-wow-delay="0.1s">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4">
+                            <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <h3 class="h5">Join Communities</h3>
+                        <p class="text-muted">Find and join groups that match your interests and passions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4">
+                            <i class="bi bi-chat-square-text-fill fs-1"></i>
+                        </div>
+                        <h3 class="h5">Share Thoughts</h3>
+                        <p class="text-muted">Express yourself and connect with like-minded people.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 animate__animated animate__fadeInUp" data-wow-delay="0.3s">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4">
+                            <i class="bi bi-lightning-charge-fill fs-1"></i>
+                        </div>
+                        <h3 class="h5">Stay Updated</h3>
+                        <p class="text-muted">Never miss what's happening in your communities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 animate__animated animate__fadeIn">
+                <img src="{% static 'simple_social/images/istockphoto-2094337676-1024x1024.jpg' %}" alt="About Simpler Social" class="img-fluid rounded shadow">
+                <!-- c:\Users\HP\Downloads\istockphoto-2094337676-1024x1024.jpg -->
+            </div>
+            <div class="col-lg-6 animate__animated animate__fadeIn">
+                <h2 class="section-title mb-4">About Simpler Social</h2>
+                <p class="lead">We believe in making social networking simple, meaningful, and enjoyable.</p>
+                <p>Simpler Social was created to cut through the noise of traditional social media platforms. We focus on genuine connections and quality interactions in communities that matter to you.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> No algorithms controlling your feed</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Privacy-focused design</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Community-driven content</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center animate__animated animate__fadeIn">
+                <h2 class="section-title mb-4">Get In Touch</h2>
+                <p class="lead mb-5">Have questions or feedback? We'd love to hear from you!</p>
+                
+                <div class="row g-4">
+                    <div class="col-md-4 animate__animated animate__fadeInUp" data-wow-delay="0.1s">
+                        <div class="contact-method p-4 rounded hover-effect">
+                            <div class="contact-icon bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
+                                <i class="bi bi-envelope-fill fs-3"></i>
+                            </div>
+                            <h3 class="h5">Email Us</h3>
+                            <p class="text-muted mb-0">contact@simplersocial.com</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                        <div class="contact-method p-4 rounded hover-effect">
+                            <div class="contact-icon bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
+                                <i class="bi bi-twitter fs-3"></i>
+                            </div>
+                            <h3 class="h5">Tweet Us</h3>
+                            <p class="text-muted mb-0">@SimplerSocial</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 animate__animated animate__fadeInUp" data-wow-delay="0.3s">
+                        <div class="contact-method p-4 rounded hover-effect">
+                            <div class="contact-icon bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
+                                <i class="bi bi-chat-left-text-fill fs-3"></i>
+                            </div>
+                            <h3 class="h5">Live Chat</h3>
+                            <p class="text-muted mb-0">Available 24/7</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
+
+

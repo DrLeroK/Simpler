@@ -1,0 +1,53 @@
+<div class="post-container">
+    <!-- Post Content -->
+    <div class="post-content-box">
+        {{ post.message_html|safe }}
+    </div>
+
+    <!-- Post Metadata -->
+    <div class="post-meta-container">
+        <div class="post-author-info">
+            <a href="{% url 'posts:for_user' username=post.user.username %}" class="author-link">
+                <span class="author-avatar">{{ post.user.username|slice:":1"|upper }}</span>
+                <span class="author-name">@{{ post.user.username }}</span>
+            </a>
+        </div>
+
+        {% if post.group %}
+        <div class="post-group-info">
+            <span class="group-prefix">in</span>
+            <a href="{% url 'groups:single' slug=post.group.slug %}" class="group-link">
+                {{ post.group.name }}
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="post-time-info">
+            <a href="{% url 'posts:single' username=post.user.username pk=post.pk %}" class="time-link">
+                {{ post.created_at|date:"M j, Y" }}
+            </a>
+        </div>
+    </div>
+
+    <!-- Post Actions -->
+    {% if user.is_authenticated and post.user == user %}
+    <div class="post-actions-container">
+        <a href="{% url 'posts:delete' pk=post.pk %}" class="delete-btn">
+            <i class="delete-icon"></i>
+            <span>Delete</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

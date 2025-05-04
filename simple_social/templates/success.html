@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container dashboard-container py-4">
+    <!-- Welcome Header -->
+    <div class="welcome-header text-center mb-5 animate__animated animate__fadeIn">
+        <h2 class="display-5 fw-bold text-primary mb-3">
+            <i class="bi bi-emoji-smile-fill me-2"></i>Welcome Back, {{ user.username }}!
+        </h2>
+        <p class="lead text-muted">Here's what's happening in your communities</p>
+    </div>
+
+    <!-- Your Groups Section -->
+    <div class="dashboard-section mb-5 animate__animated animate__fadeInUp">
+        <div class="section-header d-flex justify-content-between align-items-center mb-4">
+            <h3 class="section-title">
+                <i class="bi bi-collection-fill me-2 text-primary"></i>Your Groups
+            </h3>
+            <a href="{% url 'groups:all' %}" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-grid-3x3-gap me-1"></i>Browse All
+            </a>
+        </div>
+        
+        {% if user.user_groups.all %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for member_group in user.user_groups.all %}
+            <div class="col">
+                <div class="group-card card h-100 border-0 shadow-sm hover-zoom">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title mb-0">
+                                <a href="{% url 'groups:single' slug=member_group.group.slug %}" class="text-decoration-none">
+                                    <i class="bi bi-people-fill me-2 text-primary"></i>{{ member_group.group.name }}
+                                </a>
+                            </h5>
+                            <span class="badge bg-primary rounded-pill">
+                                {{ member_group.group.posts.count }} <i class="bi bi-chat-text"></i>
+                            </span>
+                        </div>
+                        <p class="card-text text-muted small">
+                            {{ member_group.group.description|truncatechars:100 }}
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <a href="{% url 'groups:single' slug=member_group.group.slug %}" class="btn btn-sm btn-outline-primary w-100">
+                            Visit Group <i class="bi bi-arrow-right-short"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state text-center py-5 bg-light rounded-3">
+            <i class="bi bi-people display-4 text-muted mb-3"></i>
+            <h4 class="text-muted mb-3">No Groups Yet</h4>
+            <p class="text-muted mb-4">Join communities to connect with like-minded people</p>
+            <a href="{% url 'groups:all' %}" class="btn btn-primary px-4">
+                <i class="bi bi-compass me-2"></i>Explore Groups
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Groups to Discover Section -->
+    <div class="dashboard-section mb-5 animate__animated animate__fadeInUp">
+        <div class="section-header mb-4">
+            <h3 class="section-title">
+                <i class="bi bi-lightbulb-fill me-2 text-warning"></i>Discover New Groups
+            </h3>
+            <p class="section-subtitle text-muted">Communities you might be interested in</p>
+        </div>
+        
+        {% if unjoined_groups %}
+        <div class="discover-groups">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for group in unjoined_groups %}
+                <div class="col">
+                    <div class="group-card card h-100 border-0 shadow-sm hover-float">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'groups:single' slug=group.slug %}" class="text-decoration-none">
+                                    <i class="bi bi-people me-2 text-secondary"></i>{{ group.name }}
+                                </a>
+                            </h5>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-light text-dark">
+                                    <i class="bi bi-person-fill me-1"></i>{{ group.members.count }} members
+                                </span>
+                                <a href="{% url 'groups:join' slug=group.slug %}" class="btn btn-sm btn-success">
+                                    Join <i class="bi bi-plus-circle ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state text-center py-4 bg-light rounded-3">
+            <i class="bi bi-award display-4 text-muted mb-3"></i>
+            <h4 class="text-muted mb-3">You're In All Groups!</h4>
+            <p class="text-muted">Consider creating your own community</p>
+            <a href="{% url 'groups:create' %}" class="btn btn-outline-primary">
+                <i class="bi bi-plus-circle me-2"></i>Create Group
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="dashboard-section animate__animated animate__fadeInUp">
+        <div class="section-header d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="section-title">
+                    <i class="bi bi-clock-history me-2 text-info"></i>Recent Activity
+                </h3>
+                <p class="section-subtitle text-muted mb-0">Posts from the last 24 hours</p>
+            </div>
+            {% if user.user_groups.all %}
+            <a href="{% url 'posts:create' %}" class="btn btn-sm btn-primary">
+                <i class="bi bi-plus-lg me-1"></i>New Post
+            </a>
+            {% endif %}
+        </div>
+        
+        {% if recent_posts %}
+        <div class="activity-feed">
+            {% for post in recent_posts %}
+            <div class="post-card card mb-3 border-0 shadow-sm hover-lift">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <a href="{% url 'posts:for_user' username=post.user.username %}" class="text-decoration-none">
+                            <div class="avatar-sm me-3">
+                                <div class="avatar-initials bg-primary text-white rounded-circle d-flex align-items-center justify-content-center">
+                                    {{ post.user.username|slice:":1"|upper }}
+                                </div>
+                            </div>
+                        </a>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0">
+                                <a href="{% url 'posts:for_user' username=post.user.username %}" class="text-decoration-none">
+                                    @{{ post.user.username }}
+                                </a>
+                            </h6>
+                            <small class="text-muted">{{ post.created_at|timesince }} ago</small>
+                        </div>
+                        <a href="{% url 'groups:single' slug=post.group.slug %}" class="badge bg-info text-decoration-none">
+                            <i class="bi bi-people-fill me-1"></i>{{ post.group.name }}
+                        </a>
+                    </div>
+                    <p class="post-content mb-0">{{ post.message }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-chat-left-text me-1"></i> 0 comments
+                        </small>
+                        <div>
+                            <button class="btn btn-sm btn-link text-muted">
+                                <i class="bi bi-heart"></i> Like
+                            </button>
+                            <button class="btn btn-sm btn-link text-muted">
+                                <i class="bi bi-share"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state text-center py-5 bg-light rounded-3">
+            <i class="bi bi-megaphone display-4 text-muted mb-3"></i>
+            <h4 class="text-muted mb-3">No Recent Activity</h4>
+            <p class="text-muted mb-4">
+                {% if user.user_groups.all %}
+                Be the first to post in your groups
+                {% else %}
+                Join groups to see activity
+                {% endif %}
+            </p>
+            <a href="{% if user.user_groups.all %}{% url 'posts:create' %}{% else %}{% url 'groups:all' %}{% endif %}" 
+               class="btn btn-primary px-4">
+                <i class="bi bi-{% if user.user_groups.all %}plus-lg{% else %}compass{% endif %} me-2"></i>
+                {% if user.user_groups.all %}Create Post{% else %}Browse Groups{% endif %}
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

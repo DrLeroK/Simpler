@@ -1,0 +1,47 @@
+{% extends "posts/post_base.html" %}
+{% load static %}
+
+{% block post_content %}
+<div class="post-detail-container">
+    <div class="post-content">
+        {{ post.message_html|safe }}
+    </div>
+
+    <div class="post-meta">
+        <div class="post-author">
+            <div class="author-avatar">
+                {{ post.user.username|slice:":1"|upper }}
+            </div>
+            <a href="{% url 'posts:for_user' username=post.user.username %}">
+                @{{ post.user.username }}
+            </a>
+        </div>
+
+        {% if post.group %}
+        <div class="post-group">
+            <span>in</span>
+            <a href="{% url 'groups:single' slug=post.group.slug %}">
+                {{ post.group.name }}
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="post-time">
+            <a href="{% url 'posts:single' username=post.user.username pk=post.pk %}">
+                {{ post.created_at|date:"F j, Y" }}
+            </a>
+        </div>
+    </div>
+
+    {% if user.is_authenticated and post.user == user %}
+    <div class="post-actions">
+        <a href="{% url 'posts:delete' pk=post.pk %}" class="delete-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Delete Post
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

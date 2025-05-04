@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Thank You | Simpler Social{% endblock %}
+
+{% block content %}
+<div class="logout-thanks-container">
+    <div class="logout-thanks-content animate__animated animate__fadeIn">
+        <div class="logout-thanks-icon">
+            <i class="bi bi-emoji-smile"></i>
+        </div>
+        <h1 class="logout-thanks-title">Thanks for visiting!</h1>
+        <p class="logout-thanks-message">
+            You've been successfully logged out. We hope to see you again soon.
+        </p>
+        <div class="logout-thanks-actions">
+            <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-login-again">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Log In Again
+            </a>
+            <a href="{% url 'home' %}" class="btn btn-outline-primary btn-go-home">
+                <i class="bi bi-house-door me-2"></i>Return Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

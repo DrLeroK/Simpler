@@ -1,0 +1,82 @@
+{% extends "groups/group_base.html" %}
+{% load static %}
+
+
+{% block pregroup %}
+<div class="container">
+    <div class="group-header">
+        {% if user.is_authenticated %}
+        <h2>Welcome back, <a href="{% url 'posts:for_user' username=user.username %}" class="username-link">@{{user.username}}</a></h2>
+        {% else %}
+        <h2>Groups</h2>
+        {% endif %}
+        <p>Discover communities or create your own</p>
+    </div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'groups:create' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Create Group
+    </a>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block group_content %}
+<div class="col-md-8 mx-auto">
+    {% for group in object_list %}
+    <div class="group-card">
+        <h3 class="group-title">
+            <a href="{% url 'groups:single' slug=group.slug %}">{{ group.name }}</a>
+            {% if user.is_authenticated and user in group.members.all %}
+            <span class="member-badge">Member</span>
+            {% endif %}
+        </h3>
+        
+        <div class="group-description">
+            {{ group.description_html|safe }}
+        </div>
+        
+        <div class="group-stats">
+            <div class="stat-item">
+                <i class="fas fa-users"></i>
+                {{ group.membership.count }} member{{ group.membership.count|pluralize }}
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-comment"></i>
+                {{ group.posts.count }} post{{ group.posts.count|pluralize }}
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            {% if user.is_authenticated %}
+                {% if user in group.members.all %}
+                    <a href="{% url 'groups:leave' slug=group.slug %}" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> Leave
+                    </a>
+                {% else %}
+                    <a href="{% url 'groups:join' slug=group.slug %}" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Join
+                    </a>
+                {% endif %}
+            {% endif %}
+            <a href="{% url 'groups:single' slug=group.slug %}" class="btn btn-outline">
+                <i class="fas fa-eye"></i> View
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-users-slash"></i>
+        </div>
+        <h3 class="empty-text">
+            No groups found. {% if user.is_authenticated %}Create the first one!{% endif %}
+        </h3>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+
+
+
